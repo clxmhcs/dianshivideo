@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.clxmhcs.dianshivideo.data.CatalogRepository;
 import com.clxmhcs.dianshivideo.data.CatalogSection;
 import com.clxmhcs.dianshivideo.data.VideoItem;
+import com.clxmhcs.dianshivideo.data.WatchHistory;
 import com.clxmhcs.dianshivideo.ui.VideoCardView;
 
 import java.util.List;
@@ -31,6 +32,12 @@ public final class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         hideSystemUi();
+        setContentView(buildContent());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         setContentView(buildContent());
     }
 
@@ -75,6 +82,10 @@ public final class MainActivity extends Activity {
         content.setPadding(0, 0, 0, dp(16));
 
         List<CatalogSection> sections = CatalogRepository.load(this);
+        List<VideoItem> inProgress = WatchHistory.inProgress(this, sections);
+        if (!inProgress.isEmpty()) {
+            content.addView(createSection(new CatalogSection("继续观看", inProgress)));
+        }
         for (CatalogSection section : sections) {
             content.addView(createSection(section));
         }
