@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">电视视频</string>
+    <string name="player_error">暂时无法播放此视频，请检查网络与媒体地址。</string>
+</resources>
